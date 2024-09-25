@@ -1,0 +1,84 @@
+Lidar_front_end:
+   lidar_type: 0   # 0 for Livox-mid, 1 for Livox-horizon,, 2 for velodyne
+   using_raw_point: 1
+   point_step: 1
+   N_SCANS: 6
+   
+ilive_common:
+   if_dump_log: 0                   # If recording ESIKF update log. [default = 0]
+   record_offline_map: 1            # If recording offline map. [default = 1]
+   pub_pt_minimum_views: 3          # Publish points which have been render up to "pub_pt_minimum_views" time. [default = 3]
+   minimum_pts_size: 0.01           # The minimum distance for every two points in Global map (unit in meter). [default = 0.01] 
+   image_downsample_ratio: 1        # The downsample ratio of the input image. [default = 1]
+   estimate_i2c_extrinsic: 0        # If enable estimate the extrinsic between camera and IMU. [default = 1]
+   estimate_intrinsic: 0            # If enable estimate the online intrinsic calibration of the camera lens. [default = 1] 
+   maximum_vio_tracked_pts: 600     # The maximum points for tracking. [default = 600]
+   append_global_map_point_step: 4  # The point step of append point to global map. [default = 4]
+   gravity: [ 0 ,0, 9.81]           # Gravity
+   esikf_iter_f2f_times: 1
+   esikf_iter_f2map_times: 1
+   use_lio: 1
+   use_vio_f2f: 0
+   use_vio_f2map: 0
+   if_save_mapping: true
+
+   method: "InEKF"  
+
+ilive_vio:
+   image_width: 1920
+   image_height: 1080
+   camera_intrinsic:
+      [1318.8848775218855, 0.0, 963.3230744959417,
+      0.0,  1319.7378427405124, 534.3232769421944,
+      0.0, 0.0, 1.0 ] 
+   camera_dist_coeffs: [0.12190957117577325, -0.24139075367726087, -0.0020759599190601956, -0.0017789426913190302, 0]  #k1, k2, p1, p2, k3
+   camera_ext_R:
+         [-0.00711754, -0.00076813,  0.99997437,
+            0.99980603, -0.01837026,  0.00710223,
+            0.01836433,  0.99983096,  0.00089873]
+   camera_ext_t: [0.04111729, -0.04298558, -0.06737476] 
+   camera_time_delay:    0.0   # t_imu = t_cam + t_shift
+   cam_cov_scale: 10   
+ilive_lio:        
+   lio_update_point_step: 1  # Point step used for LIO update.  
+   max_iteration: 2           # Maximum times of LIO esikf.
+   lidar_time_delay: 0        # The time-offset between LiDAR and IMU, provided by user. 
+   filter_size_corner: 0.30   
+   filter_size_surf: 0.1
+   filter_size_surf_z: 0.1
+   filter_size_map: 0.30
+   lid_cov_scale: 0.0003
+   ext_t_lid_in_imu: [-0.0429,-0.0084,-0.1287]
+
+   ext_R_lid_in_imu:
+              [0.9996,0.0263,-0.0210,
+               0.0264,-0.9996,0.0047,
+               -0.0210,-0.0050,-0.9999]
+            #  [1,0,0,0,-1,0,0,0,-1]
+   publish_feature_map: true
+   long_rang_pt_dis: 500            
+   planar_check_dis: 0.04     
+
+ilive_IMU:
+   imu_cov_scale: 0.1
+   max_IMU_calibration_num: 100
+   # COV_ACC_NOISE_DIAG: 1.0000719245845745e-02
+   # COV_OMEGA_NOISE_DIAG:       1.9353791022110850e-03
+   # COV_BIAS_ACC_NOISE_DIAG: 2.9860130316987219e-04
+   # COV_BIAS_GYRO_NOISE_DIAG: 3.2649811470796007e-05
+
+   # COV_OMEGA_NOISE_DIAG:    0.3                    #1.9353791022110850e-03
+   # COV_ACC_NOISE_DIAG:        0.3        #2.9860130316987219e-04
+   # COV_BIAS_ACC_NOISE_DIAG:    0.01             #3.2649811470796007e-05
+   # COV_BIAS_GYRO_NOISE_DIAG: 0.01 
+
+   COV_ACC_NOISE_DIAG: 5.0000719245845745e-02
+   COV_OMEGA_NOISE_DIAG:       5.9353791022110850e-03
+   COV_BIAS_ACC_NOISE_DIAG: 0.9e-03
+   COV_BIAS_GYRO_NOISE_DIAG: 1.2649811470796007e-03
+
+
+   # COV_ACC_NOISE_DIAG: 5.0000719245845745e-02
+   # COV_OMEGA_NOISE_DIAG:       9.9353791022110850e-03
+   # COV_BIAS_ACC_NOISE_DIAG: 2.9860130316987219e-04
+   # COV_BIAS_GYRO_NOISE_DIAG: 3.2649811470796007e-05

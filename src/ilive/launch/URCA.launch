@@ -1,0 +1,44 @@
+
+
+<launch>
+    <!-- Subscribed topics -->
+    <arg name="method"   default="InEKF" /> 
+    <arg name="iters"   default="3" />
+
+    <param name="IMU_topic" type="string" value= "/imu_raw" />
+
+    <param name="LiDAR_pointcloud_topic" type="string" value= "/rslidar_points" />
+
+    <param name="Image_topic" type="string" value= "/camera_array/cam2/image_raw" />
+
+    <param name="ilive_common/map_output_dir" type="string" value="$(env HOME)/ilive_output" />
+
+    <rosparam command="load" file="$(find ilive)/config/URCA.yaml" />
+
+    <param name="ilive_common/method"  type="string" value="$(arg method)" /> 
+    <param name="ilive_lio/max_iteration"  type="int" value="$(arg iters)" /> 
+
+
+    <node pkg="ilive" type="ilive_LiDAR_front_end" name="ilive_LiDAR_front_end"  output="screen" required="true"/>
+    <node pkg="ilive" type="ilive_mapping" name="ilive_mapping" output="screen" required="true" />
+    
+    <arg name="rviz" default="1" />
+    <group if="$(arg rviz)">
+        <node name="rvizvisualisation" pkg="rviz" type="rviz" output="log" args="-d $(find ilive)/config/rviz/ilive_rviz_config.rviz" />
+    </group>
+
+  
+<!-- what ros bag to play -->
+    <arg name="dataset"   default="CA1" /> 
+    <arg name="bag_path"   default="/home/slam/workspace/dataset/locourban" />  
+
+<!-- where to save the recorded poses -->
+    <arg name="path_save"   default="/home/slam/workspace/ws_ILIVE/Evaluation_ILIVE/ILIVE/output/urhk_output/$(arg method)/$(arg iters)" /> 
+
+<!-- play the dataset -->
+    <node pkg="rosbag" type="play" name="play" args=" -r 0.25 $(arg bag_path)/$(arg dataset).bag" required="true" />
+    <node pkg="rosbag" type="record" name="record" args="/aft_mapped_to_init          /novatel_data/inspvax         /navsat/odom   -O $(arg path_save)/test.bag" required="true" /> 
+
+    <!-- <node pkg="rosbag" type="record" name="record" args="/aft_mapped_to_init      novatel_data/inspvax       /ublox_node/fix     -O $(arg path_save)/test.bag" required="true" />  -->
+
+</launch>

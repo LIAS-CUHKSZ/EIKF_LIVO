@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<package>
+  <name>ilive</name>
+  <version>1.0.0</version>
+  <description>ILIVE</description>
+  <maintainer email="xinghanli0207@gmail.com">Xinghan.Li</maintainer>
+  <license>GPLv2</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <build_depend>roscpp</build_depend>
+
+  <run_depend>catkin</run_depend>
+  <run_depend>roscpp</run_depend>
+
+</package>

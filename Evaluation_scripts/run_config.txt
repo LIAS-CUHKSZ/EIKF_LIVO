@@ -1,0 +1,9 @@
+urca  /home/slam/workspace/dataset/locourban  urca2r EKF lio 1 URCA.launch
+urca  /home/slam/workspace/dataset/locourban   urca2r EKF lio 2 URCA.launch
+urca  /home/slam/workspace/dataset/locourban   urca2r EKF lio 3 URCA.launch
+urca  /home/slam/workspace/dataset/locourban  urca2r InEKF lio 1 URCA.launch
+urca  /home/slam/workspace/dataset/locourban  urca2r InEKF lio 2 URCA.launch
+urca  /home/slam/workspace/dataset/locourban   urca2r InEKF lio 3 URCA.launch
+urca  /home/slam/workspace/dataset/locourban   urca2r EIKF lio 1 URCA.launch
+
+ 

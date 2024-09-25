@@ -1,0 +1,45 @@
+
+<launch>
+<!-- Subscribed topics -->
+
+    <arg name="method"   default="InEKF" /> 
+    <arg name="iters"   default="3" />
+    <arg name="if_vio_f2f"   default= "1" />
+    <arg name="if_vio_f2map"   default= "1" />
+    <arg name="cam_cov_scale"   default= "1.0" />
+
+    <param name="IMU_topic" type="string" value= "/livox/imu" />
+    <param name="LiDAR_pointcloud_topic" type="string" value= "/laser_cloud_flat" />
+    <param name="Image_topic" type="string" value= "/camera/image_color" />
+    <param name="ilive_common/map_output_dir" type="string" value="$(env HOME)/ilive_output" />
+
+<!--load data from .yaml -->
+    <rosparam command="load" file="$(find ilive)/config/HKU_config.yaml" />
+<!-- reset frame_id parameters using user input data -->
+    <param name="ilive_common/method"  type="string" value="$(arg method)" />  
+    <param name="ilive_lio/max_iteration"  type="int" value="$(arg iters)" /> 
+    <param name="ilive_common/use_vio_f2f"  type="int" value="$(arg if_vio_f2f)" /> 
+    <param name="ilive_common/use_vio_f2map"  type="int" value="$(arg if_vio_f2map)" /> 
+    <param name="ilive_vio/cam_cov_scale"  type="double" value="$(arg cam_cov_scale)" /> 
+
+    <node pkg="ilive" type="ilive_LiDAR_front_end" name="ilive_LiDAR_front_end"  output="screen" required="true"/>
+    <node pkg="ilive" type="ilive_mapping" name="ilive_mapping" output="screen" required="true" />
+    <arg name="rviz" default="1" />
+    <group if="$(arg rviz)">
+        <node name="rvizvisualisation" pkg="rviz" type="rviz" output="log" args="-d $(find ilive)/config/rviz/ilive_rviz_config.rviz" />
+    </group>
+
+  
+<!-- what ros bag to play -->
+    <arg name="dataset"   default="degenerate_seq_02" /> 
+    <arg name="bag_path"   default="/home/neo/r3live_ws/src/r3live/degenerate_seq_02.bag" /> 
+
+<!-- where to save the recorded poses -->
+    <!-- <arg name="path_save"   default="/home/slam/workspace/ws_ILIVE/Evaluation_ILIVE/ILIVE/output" />  -->
+
+<!-- play the dataset and record -->
+    <!-- <node pkg="rosbag" type="play" name="play" args="$(arg bag_path)" required="false" /> --> -->
+    <!-- <node pkg="rosbag" type="record" name="record" args="/aft_mapped_to_init  /leica/pose/relative  -O $(arg path_save)/test.bag" required="true" />  --> -->
+
+
+</launch>
